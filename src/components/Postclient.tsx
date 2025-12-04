@@ -7,23 +7,6 @@ import { PostT } from "@/app/post/page";
 export default function PostClient({ posts }: { posts: PostT[] }) {
     const [allPosts, setAllPosts] = useState<PostT[]>(posts);
     const [userFilter, setUserFilter] = useState<number | "all">("all");
-// async function handleDelete(id: number) {
-//     try {
-//         const res = await fetch(`/api/post/${id}`, { method: "DELETE" });
-
-//         if (!res.ok) {
-//             const error = await res.json().catch(() => null);
-//             console.error("Server error:", error);
-//             return;
-//         }
-
-//         // ❗ نتیجه کامل UI آپدیت
-//         setAllPosts(prev => prev.filter(post =>Number(post.id)  !== id));
-//     }
-//     catch (err) {
-//         console.error("Network error:", err);
-//     }
-// }
 
     async function handleDelete(id: number) {
         const res = await fetch(`/api/post/${id}`, { method: "DELETE" });
