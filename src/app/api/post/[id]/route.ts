@@ -1,32 +1,30 @@
-
-
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
 // GET /api/post/:id
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
 
   const post = await prisma.post.findUnique({
     where: { id: Number(id) },
   });
 
   if (!post) {
-    return Response.json({ error: "Post not found" }, { status: 404 });
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
   }
 
-  return Response.json(post, { status: 200 });
+  return NextResponse.json(post, { status: 200 });
 }
 
 // PATCH /api/post/:id
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
   const { title, body } = await req.json();
 
   try {
@@ -35,27 +33,26 @@ export async function PATCH(
       data: { title, body },
     });
 
-    return Response.json(updated);
+    return NextResponse.json(updated);
   } catch {
-    return Response.json({ error: "Post not found" }, { status: 404 });
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
   }
 }
 
 // DELETE /api/post/:id
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
 
   try {
     const deleted = await prisma.post.delete({
       where: { id: Number(id) },
     });
 
-    return Response.json(deleted);
+    return NextResponse.json(deleted);
   } catch {
-    return Response.json({ error: "Post not found" }, { status: 404 });
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
   }
 }
-
