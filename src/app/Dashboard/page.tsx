@@ -10,7 +10,7 @@ interface Message {
 
 
 import { useEffect, useState } from "react";
-// import DeleteButton from "@/components/DeleteButton";
+import DeleteButton from "@/components/DeleteButton";
 export default function Dashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -23,12 +23,12 @@ export default function Dashboard() {
     loadMessages();
   }, []);
 
-    // const handleDelete = async (id: string) => {
-    //     await fetch(`/api/contact/${id}`, {
-    //     method: "DELETE",
-    //     });
-    //     setMessages((prev) => prev.filter((msg) => msg.id !== id));
-    // };
+    const handleDelete = async (id: string) => {
+        await fetch(`/api/contact/${id}`, {
+        method: "DELETE",
+        });
+        setMessages((prev) => prev.filter((msg) => msg.id !== id));
+    };
 
    return (
         <div className="p-8">
@@ -53,7 +53,7 @@ export default function Dashboard() {
                         <td className="border p-2 text-center">{m.phone}</td>
                         <td className="border p-2">{m.message}</td>
                         <td className="border p-2 text-center">
-                        {/* <DeleteButton  id={m.id} onDelete={handleDelete}  /> */}
+                        <DeleteButton  id={m.id} onDelete={handleDelete}  /> 
                         </td>
                     </tr>
                 ))}
