@@ -1,26 +1,10 @@
-import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-
-// تایپ دقیق برای contact
-type Contact = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string | null;
-  message: string;
-};
-
-// تایپ پارامتر route
-interface RouteParams {
-  id: string;
-}
-
+import { prisma } from "@/lib/db";
 export async function GET(
   req: NextRequest,
-  { params }: { params: RouteParams }
-): Promise<NextResponse<Contact | { error: string }>> {
-  const { id } = params;
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params; // توجه: await اینجا باید باشد
 
   const contact = await prisma.contact.findUnique({
     where: { id: Number(id) },
@@ -35,9 +19,9 @@ export async function GET(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: RouteParams }
-): Promise<NextResponse<Contact | { error: string }>> {
-  const { id } = params;
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
 
   try {
     const deleted = await prisma.contact.delete({
