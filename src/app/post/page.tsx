@@ -18,9 +18,10 @@ const Post = async () => {
   
   await Sleep(2000);
 
-  const res = await fetch("http://localhost:3000/api/post", {
-    cache: "no-store",
-  });
+  // const res = await fetch("http://localhost:3000/api/post", {
+  //   cache: "no-store",
+  // });
+const res = await fetch("/api/post", { cache: "no-store" });
 
 
   const posts: PostT[] = await res.json();
